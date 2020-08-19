@@ -61,6 +61,7 @@
 #include <Carbon/Carbon.h>
 #include <IOKit/hid/IOHIDLib.h>
 #include <libgen.h>
+#include <libproc.h>
 
 // ****************************************************
 #pragma mark -
@@ -121,9 +122,19 @@ static CFMutableDictionaryRef hu_CreateMatchingDictionaryUsagePageUsage(Boolean 
 int main(int argc, const char *argv[]) {
 #pragma unused ( argc, argv )
     IOHIDDeviceRef *tIOHIDDeviceRefs = nil;
-    char *path = dirname(argv[0]);
+//    char *path = dirname(argv[0]);
+//    char config_path[1024];
+//    sprintf(config_path, "%s/led-backlight-cmstorm.cfg", path);
+    char proc_path[1024];
+    pid_t pid = getpid();
+    if (proc_pidpath(pid, proc_path, sizeof(proc_path)) <= 0) {
+        fprintf(stderr, "Fail to get path of the pid=%d\n", pid);
+        exit(1);
+    }
+    char *proc_dir = dirname(proc_path);
     char config_path[1024];
-    sprintf(config_path, "%s/led-backlight-cmstorm.cfg", path);
+    snprintf(config_path, sizeof(config_path), "%s/%s", proc_dir, ".ledon.config");
+
     // create a IO HID Manager reference
     IOHIDManagerRef tIOHIDManagerRef = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     require(tIOHIDManagerRef, Oops);

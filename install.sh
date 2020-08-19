@@ -1,10 +1,10 @@
 #!/bin/sh
 
 echo "Downloading..."
-curl -L  https://github.com/gholker/led-backlight-cmstorm/blob/master/led-backlight-cmstorm?raw=true > ~/Applications/led-backlight-cmstorm
+curl -L  https://github.com/lanterrt/ledon/blob/master/led-backlight-cmstorm?raw=true > ~/Applications/ledon
 
 echo "Making executable"
-chmod +x ~/Applications/led-backlight-cmstorm
+chmod +x ~/Applications/ledon
 
 echo "Running..."
-~/Applications/led-backlight-cmstorm
+~/Applications/ledon
